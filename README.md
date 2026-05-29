@@ -7,9 +7,8 @@ Network Administrator | Full-Stack Develope | Graphic Designer
 I Am A Graduate In Computer Network And System From UCAO And A Third-Year Student At UNCHK.
 
 * 🌍  I'm based in DAKAR-SENEGAL
-* 🖥️  See my portfolio at [https://christiangilbertfodediouf.com/](http://https://christiangilbertfodediouf.com/)
+* 🖥️  See my portfolio at [https://christiangilbertfodediouf.com/]()
 * ✉️  You can contact me at [christiandiouf23@gmail.com](mailto:christiandiouf23@gmail.com)
-* 🚀  I'm currently working on [YOON 3D](http://github.com/cjr23/YOON-3D)
 * 🧠  I'm learning Fusion 360,Artificial Intelligence (AI),Data Science,Js
 * 🤝  I'm open to collaborating on developing projects in AI and ML.
 * ⚡  I am passionate about coding, video games, and learning new things that contribute to my development.
