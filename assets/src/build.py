@@ -212,29 +212,29 @@ def browser_frame(s, rid, x, y, w, url, image):
 # ---------------------------------------------------------------------------
 
 NODES = {
-    "gateway": (955, 210), "web": (800, 108), "cloud": (975, 72), "design": (1098, 104),
-    "infra": (1135, 248), "data": (1050, 352), "ai": (842, 334), "lan": (772, 222),
+    "gateway": (955, 210), "web": (800, 108), "cloud": (975, 72), "iot": (1098, 104),
+    "infra": (1135, 248), "data": (1050, 352), "ai": (842, 334), "edtech": (772, 222),
 }
-LINKS = [("gateway", n) for n in ("web", "cloud", "design", "infra", "data", "ai", "lan")] + [
-    ("web", "cloud"), ("cloud", "design"), ("design", "infra"), ("infra", "data"),
-    ("data", "ai"), ("ai", "lan"), ("lan", "web"),
+LINKS = [("gateway", n) for n in ("web", "cloud", "iot", "infra", "data", "ai", "edtech")] + [
+    ("web", "cloud"), ("cloud", "iot"), ("iot", "infra"), ("infra", "data"),
+    ("data", "ai"), ("ai", "edtech"), ("edtech", "web"),
 ]
 # (from, to, duration in s, start offset in s)
 PACKETS = [
     ("web", "gateway", 2.6, 0), ("gateway", "infra", 2.2, 0.8), ("data", "gateway", 3.0, 1.6),
-    ("gateway", "cloud", 2.4, 0.4), ("lan", "gateway", 2.8, 2.0), ("gateway", "ai", 2.5, 1.2),
-    ("design", "infra", 3.2, 0.6), ("ai", "lan", 3.4, 2.4), ("cloud", "design", 3.0, 1.0),
+    ("gateway", "cloud", 2.4, 0.4), ("edtech", "gateway", 2.8, 2.0), ("gateway", "ai", 2.5, 1.2),
+    ("iot", "infra", 3.2, 0.6), ("ai", "edtech", 3.4, 2.4), ("cloud", "iot", 3.0, 1.0),
 ]
 LABEL_OFFSETS = {
     "gateway": (0, 44, "middle"), "web": (-14, -16, "end"), "cloud": (0, -20, "middle"),
-    "design": (14, -14, "start"), "infra": (0, 30, "middle"), "data": (14, 24, "start"),
-    "ai": (-14, 24, "end"), "lan": (-16, 5, "end"),
+    "iot": (14, -14, "start"), "infra": (0, 30, "middle"), "data": (14, 24, "start"),
+    "ai": (-14, 24, "end"), "edtech": (-16, 5, "end"),
 }
 
 
 def header(fonts):
-    s = Svg(1200, 420, "Christian Gilbert Fode Diouf: networks and systems, web developer, "
-                       "graphic designer, based in Dakar, Senegal")
+    s = Svg(1200, 420, "Christian Gilbert Fodé Diouf: network administrator, full-stack developer "
+                       "and trainer, founder of Teranga Académie, based in Dakar, Senegal")
     s.add(f"""<defs>
 <clipPath id="c"><rect width="1200" height="420" rx="24"/></clipPath>
 <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{BG0}"/><stop offset="1" stop-color="#0C1729"/></linearGradient>
@@ -288,9 +288,9 @@ def header(fonts):
     y1 = 186
     y2 = y1 + round(size * 1.04)
     s.text(x0, y1, "Christian Gilbert", weight=700, size=size, cls="in", attrs='style="animation-delay:.12s"')
-    s.text(x0, y2, "Fode Diouf", weight=700, size=size, fill="url(#name)",
+    s.text(x0, y2, "Fodé Diouf", weight=700, size=size, fill="url(#name)",
            cls="in", attrs='style="animation-delay:.24s"')
-    role = "Networks & Systems · Web Developer · Graphic Designer"
+    role = "Network Administrator · Full-Stack Developer · Trainer"
     role_size = 21
     while fonts.width(role, "d", 500, role_size) > 610:
         role_size -= 0.5
@@ -298,8 +298,8 @@ def header(fonts):
            cls="in", attrs='style="animation-delay:.36s"')
 
     x = x0
-    for i, (label, dot) in enumerate((("Dakar, Senegal", AMBER), ("UCAO graduate", TEAL),
-                                      ("Studying at UNCHK", CYAN))):
+    for i, (label, dot) in enumerate((("Dakar, Senegal", AMBER), ("Founder of Teranga Académie", TEAL),
+                                      ("Open to work", GREEN))):
         s.add(f'<g class="in" style="animation-delay:{0.5 + i * 0.1:.2f}s">')
         x += chip(s, fonts, x, 342, label, dot=dot) + 10
         s.add("</g>")
@@ -314,14 +314,14 @@ def header(fonts):
 # ---------------------------------------------------------------------------
 
 ABOUT = [
-    ("Role", "Aspiring network administrator"),
-    ("Also", "Web developer · Graphic designer"),
-    ("Education", "Networks & Systems, UCAO · now at UNCHK"),
-    ("Location", "Dakar, Senegal"),
-    ("Building", "Websites and web apps for schools & SMEs"),
-    ("Learning", "AI · Data Science · Fusion 360"),
-    ("Open to", "AI & machine learning collaborations"),
-    ("Hobbies", "Video games · learning new things"),
+    ("Role", "Network admin · Full-stack developer"),
+    ("Founder", "Teranga Académie, e-learning in French"),
+    ("Focus", "EdTech for francophone Africa"),
+    ("Background", "Networks, IoT, teaching, marketing"),
+    ("Education", "UCAO graduate · 3rd year at UNCHK"),
+    ("Exploring", "AI agents · LLM integration · Data"),
+    ("Open to", "Full-time or freelance · remote too"),
+    ("Speaks", "French · English"),
 ]
 
 
@@ -375,7 +375,7 @@ def terminal(fonts):
            cls="in", attrs='style="animation-delay:.15s"')
     s.text(x, y + 26, "-" * 15, font="m", size=19, fill=LINE2,
            cls="in", attrs='style="animation-delay:.2s"')
-    key_w = fonts.width("Education  ", "m", 400, 19)
+    key_w = fonts.width(max((k for k, _ in ABOUT), key=len) + "  ", "m", 400, 19)
     for i, (key, value) in enumerate(ABOUT):
         row_y = y + 64 + i * step
         delay = f'style="animation-delay:{0.28 + i * 0.09:.2f}s"'
@@ -418,48 +418,71 @@ def title(fonts, number, text, comment, dark):
 # Project cards
 # ---------------------------------------------------------------------------
 
-def project_wide(fonts):
-    s = Svg(1200, 470, "SchoolPro: school management app for Senegalese schools. Mock exams "
-                       "(CFEE, BFEM, BAC), grades, report cards and attendance. Works offline. "
-                       "HTML, CSS and JavaScript.")
+def project_wide(fonts, image, url, label, title_text, tagline, chips, cta):
+    s = Svg(1200, 470, f"{title_text}: {tagline}")
     clip = card_background(s, "w", glow=(0.95, 0.9))
     s.add(f'<g clip-path="url(#{clip})">')
-    browser_frame(s, "f", 600, 64, 680, "SchoolPro · Gestion scolaire", screenshot("schoolpro", 1360))
+    browser_frame(s, "f", 600, 64, 680, url, screenshot(image, 1360))
     s.add("</g>")
 
     x = 56
-    chip(s, fonts, x, 56, "FEATURED · WEB APP", color=TEAL, dot=TEAL, cls="in")
-    s.text(x, 162, "SchoolPro", weight=700, size=56, cls="in", attrs='style="animation-delay:.1s"')
-    tagline = ("School management app for Senegalese schools: mock exams (CFEE, BFEM, BAC), "
-               "grades, report cards and attendance. Works offline.")
+    chip(s, fonts, x, 56, label, color=TEAL, dot=TEAL, cls="in")
+    s.text(x, 162, title_text, weight=700, size=56, cls="in", attrs='style="animation-delay:.1s"')
     for i, line in enumerate(wrap(fonts, tagline, "d", 400, 21, 480)):
         s.text(x, 210 + i * 32, line, size=21, fill=MUTED, cls="in", attrs='style="animation-delay:.2s"')
     cx = x
-    for label in ("HTML", "CSS", "JavaScript", "Offline-first"):
-        cx += chip(s, fonts, cx, 342, label, cls="in") + 8
-    s.text(x, 420, [("View on GitHub ", TEAL), ("→", TEAL)], weight=600, size=18,
+    for c in chips:
+        if cx + fonts.width(c, "m", 500, 14) + 28 > 560:
+            break
+        cx += chip(s, fonts, cx, 342, c, cls="in") + 8
+    s.text(x, 420, [(f"{cta} ", TEAL), ("↗", TEAL)], weight=600, size=18,
            cls="in", attrs='style="animation-delay:.3s"')
     card_border(s)
     return s
 
 
-def project_small(fonts, name, image, url, title_text, tagline, chips, label):
-    s = Svg(590, 640, f"{title_text}: {tagline} Live at {url}.")
+def project_small(fonts, name, url, title_text, tagline, chips, label, *, dot=GREEN, cta="Visit"):
+    s = Svg(590, 640, f"{title_text}: {tagline}")
     clip = card_background(s, name[0], glow=(0.5, 0.0))
     s.add(f'<g clip-path="url(#{clip})">')
-    frame_h = browser_frame(s, f"{name}f", 28, 28, 534, url, screenshot(image, 1080))
+    frame_h = browser_frame(s, f"{name}f", 28, 28, 534, url, screenshot(name, 1080))
     s.add("</g>")
     y = 28 + frame_h + 44
-    s.add(f'<circle cx="34" cy="{y - 5}" r="5" fill="{GREEN}"><animate attributeName="opacity" '
+    s.add(f'<circle cx="34" cy="{y - 5}" r="5" fill="{dot}"><animate attributeName="opacity" '
           f'values="1;.35;1" dur="2s" repeatCount="indefinite"/></circle>')
-    s.text(48, y, label, font="m", weight=500, size=14, fill=GREEN, attrs='letter-spacing="1.5"')
+    s.text(48, y, label, font="m", weight=500, size=14, fill=dot, attrs='letter-spacing="1.5"')
     s.text(28, y + 46, title_text, weight=700, size=34)
     for i, line in enumerate(wrap(fonts, tagline, "d", 400, 19, 534)):
         s.text(28, y + 84 + i * 28, line, size=19, fill=MUTED)
     cx = 28
     for c in chips:
         cx += chip(s, fonts, cx, s.h - 64, c) + 8
-    s.text(562, s.h - 42, [("Visit ", TEAL), ("↗", TEAL)], weight=600, size=18, anchor="end")
+    s.text(562, s.h - 42, [(f"{cta} ", TEAL), ("↗", TEAL)], weight=600, size=18, anchor="end")
+    card_border(s)
+    return s
+
+
+def project_progress(fonts, title_text, tagline):
+    """Slim card for a project still being built, with an indeterminate progress bar."""
+    s = Svg(1200, 204, f"{title_text}, in progress: {tagline}")
+    card_background(s, "p", glow=(1.0, 0.5))
+    s.add(f'<circle cx="62" cy="55" r="5" fill="{AMBER}"><animate attributeName="opacity" '
+          f'values="1;.35;1" dur="2s" repeatCount="indefinite"/></circle>')
+    s.text(76, 60, "IN PROGRESS", font="m", weight=500, size=14, fill=AMBER, attrs='letter-spacing="1.5"')
+    s.text(56, 106, title_text, weight=700, size=34)
+    for i, line in enumerate(wrap(fonts, tagline, "d", 400, 19, 600)):
+        s.text(56, 142 + i * 28, line, size=19, fill=MUTED)
+    x, w, bar_y = 760, 384, 108
+    s.text(x, bar_y - 20, [("$ ", TEAL), ("teranga-ai ", SOFT), ("--build", MUTED)], font="m", size=16)
+    s.add(f'<defs><clipPath id="pb"><rect x="{x}" y="{bar_y}" width="{w}" height="10" rx="5"/></clipPath>'
+          f'<linearGradient id="pg" x1="0" x2="1"><stop offset="0" stop-color="{AMBER}" stop-opacity="0"/>'
+          f'<stop offset=".5" stop-color="{AMBER}"/><stop offset="1" stop-color="{AMBER}" stop-opacity="0"/>'
+          f'</linearGradient></defs>'
+          f'<rect x="{x}" y="{bar_y}" width="{w}" height="10" rx="5" fill="{PANEL}" stroke="{LINE2}"/>'
+          f'<g clip-path="url(#pb)"><rect x="{x - 160}" y="{bar_y}" width="160" height="10" fill="url(#pg)">'
+          f'<animate attributeName="x" values="{x - 160};{x + w}" dur="2.2s" repeatCount="indefinite"/>'
+          f'</rect></g>')
+    s.text(x, bar_y + 42, "status: work in progress", font="m", size=14, fill=DIM)
     card_border(s)
     return s
 
@@ -468,14 +491,17 @@ def project_small(fonts, name, image, url, title_text, tagline, chips, label):
 # Tech stack
 # ---------------------------------------------------------------------------
 
+# (category, skillicons.dev ids or None, text chips for skills that have no icon)
 STACK = [
-    ("NETWORKS & SYSTEMS", ["linux", "bash", "docker", "aws", "gcp", "raspberrypi", "arduino"]),
-    ("WEB", ["html", "css", "js", "ts", "react", "nextjs", "angular", "nodejs", "php", "django",
-             "wordpress", "tailwind", "bootstrap", "sass"]),
-    ("LANGUAGES · DATA · AI", ["python", "java", "c", "cpp", "mysql", "postgres", "tensorflow", "pytorch"]),
-    ("DESIGN", ["ps", "ai", "ae", "pr", "xd", "figma"]),
+    ("NETWORK & SECURITY", None, ["Switches", "Firewalls", "VPN", "Linux servers"]),
+    ("LANGUAGES", ["js", "ts", "python", "php", "java", "c", "cpp", "bash"], None),
+    ("FRONTEND", ["html", "css", "react", "nextjs", "angular", "tailwind", "bootstrap", "sass"], None),
+    ("BACKEND & DATA", ["nodejs", "django", "mysql", "postgres", "supabase", "wordpress"], None),
+    ("CLOUD · DEVOPS · IOT", ["vercel", "docker", "linux", "aws", "gcp", "arduino", "raspberrypi", "git"], None),
+    ("AI & DESIGN", ["tensorflow", "pytorch", "figma", "ps", "ai", "pr", "ae"], None),
 ]
 ICON_NAMES = {
+    "supabase": "Supabase", "vercel": "Vercel", "git": "Git",
     "linux": "Linux", "bash": "Bash", "docker": "Docker", "aws": "AWS", "gcp": "Google Cloud",
     "raspberrypi": "Raspberry Pi", "arduino": "Arduino", "html": "HTML", "css": "CSS",
     "js": "JavaScript", "ts": "TypeScript", "react": "React", "nextjs": "Next.js",
@@ -496,24 +522,28 @@ def icon(name):
 
 
 def stack(fonts):
-    size, gap, row_h, top = 48, 12, 84, 26
+    size, gap, row_h, top = 52, 14, 84, 26
     h = top * 2 + row_h * len(STACK)
     label = "Tech stack. " + ". ".join(
-        f"{cat.title()}: {', '.join(ICON_NAMES[i] for i in icons)}" for cat, icons in STACK)
+        f"{cat.title()}: {', '.join([ICON_NAMES[i] for i in icons or []] + (chips or []))}"
+        for cat, icons, chips in STACK)
     s = Svg(1200, h, label)
     card_background(s, "s", glow=(1.0, 0.0))
     n = 0
-    for r, (category, icons) in enumerate(STACK):
+    for r, (category, icons, chips) in enumerate(STACK):
         y = top + r * row_h
         if r:
             s.add(f'<line x1="40" y1="{y}" x2="1160" y2="{y}" stroke="{LINE}"/>')
         s.text(48, y + row_h / 2 + 5, category, font="m", weight=700, size=14, fill=TEAL,
                attrs='letter-spacing="1.5"')
-        for i, name in enumerate(icons):
-            ix = 318 + i * (size + gap)
-            s.add(f'<image class="in" style="animation-delay:{n * 0.03:.2f}s" x="{ix}" '
+        x = 330
+        for name in icons or []:
+            s.add(f'<image class="in" style="animation-delay:{n * 0.03:.2f}s" x="{x}" '
                   f'y="{y + (row_h - size) / 2:g}" width="{size}" height="{size}" href="{icon(name)}"/>')
+            x += size + gap
             n += 1
+        for c in chips or []:
+            x += chip(s, fonts, x, y + (row_h - 42) / 2, c, h=42, size=16, dot=CYAN) + 12
     card_border(s)
     return s
 
@@ -522,11 +552,26 @@ def stack(fonts):
 # Contact buttons and footer
 # ---------------------------------------------------------------------------
 
+BUTTONS = {
+    "portfolio": "Portfolio", "academie": "Teranga Académie", "linkedin": "LinkedIn", "email": "Email",
+}
+
+
 def button(fonts, kind):
-    text = {"linkedin": "LinkedIn", "email": "Email me"}[kind]
-    s = Svg(300, 76, text)
-    s.add(f'<rect x="1" y="1" width="298" height="74" rx="37" fill="{BG1}" stroke="{LINE2}" stroke-width="1.5"/>')
-    if kind == "linkedin":
+    """Pill-shaped link button sized to its label."""
+    text = BUTTONS[kind]
+    w = round(82 + fonts.width(text, "d", 600, 22) + 64)
+    s = Svg(w, 76, text)
+    s.add(f'<rect x="1" y="1" width="{w - 2}" height="74" rx="37" fill="{BG1}" stroke="{LINE2}" stroke-width="1.5"/>')
+    if kind == "portfolio":
+        s.add(f'<rect x="26" y="20" width="36" height="36" rx="8" fill="{CYAN}"/>')
+        s.text(44, 44, ">_", font="m", weight=700, size=16, fill=BG0, anchor="middle")
+    elif kind == "academie":
+        s.add(f'<rect x="26" y="20" width="36" height="36" rx="8" fill="{AMBER}"/>'
+              f'<path d="M44 28l13 6.5-13 6.5-13-6.5z" fill="{BG0}"/>'
+              f'<path d="M37 38v5.5c0 1.8 3.1 3.5 7 3.5s7-1.7 7-3.5V38" fill="none" stroke="{BG0}" stroke-width="2.2"/>'
+              f'<path d="M57 34.5v7" stroke="{BG0}" stroke-width="2" stroke-linecap="round"/>')
+    elif kind == "linkedin":
         s.add('<rect x="26" y="20" width="36" height="36" rx="8" fill="#0A66C2"/>'
               '<rect x="33" y="35" width="5.5" height="14" fill="#fff"/><circle cx="35.75" cy="29" r="3.4" fill="#fff"/>'
               '<path d="M43 35h5.2v2.1c.8-1.4 2.4-2.5 4.8-2.5 4 0 4.9 2.5 4.9 5.9V49h-5.5v-7.6c0-1.7-.3-3-2-3-1.8 0-2.1 1.4-2.1 3V49H43z" fill="#fff"/>')
@@ -535,12 +580,12 @@ def button(fonts, kind):
               f'<rect x="33" y="29" width="22" height="16" rx="2.5" fill="none" stroke="{BG0}" stroke-width="2.2"/>'
               f'<path d="M34 31l10 7 10-7" fill="none" stroke="{BG0}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>')
     s.text(82, 46, text, weight=600, size=22)
-    s.text(270, 46, "→", weight=600, size=22, fill=DIM, anchor="end")
+    s.text(w - 28, 46, "→", weight=600, size=22, fill=DIM, anchor="end")
     return s
 
 
 def footer(fonts):
-    s = Svg(1200, 120, "Thanks for stopping by")
+    s = Svg(1200, 120, "I build the network, then the apps that run on it")
     card_background(s, "z", glow=(0.5, 1.2))
     xs = [80 + i * 130 for i in range(9)]
     s.add(f'<line x1="{xs[0]}" y1="40" x2="{xs[-1]}" y2="40" stroke="{TEAL}" stroke-opacity=".3" '
@@ -553,7 +598,7 @@ def footer(fonts):
               f'{timing}/></circle>')
     s.add('<defs><filter id="fg" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur '
           'stdDeviation="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>')
-    s.text(600, 88, [("$ ", TEAL), ("echo ", SOFT), ('"thanks for stopping by, see you on the network"', MUTED)],
+    s.text(600, 88, [("$ ", TEAL), ("echo ", SOFT), ('"I build the network, then the apps that run on it"', MUTED)],
            font="m", size=16, anchor="middle")
     card_border(s)
     return s
@@ -564,26 +609,45 @@ def main():
     outputs = {
         "header.svg": header(fonts),
         "about.svg": terminal(fonts),
-        "project-schoolpro.svg": project_wide(fonts),
+        "project-academie.svg": project_wide(
+            fonts, "academie", "terangaacademie.com", "FOUNDER · E-LEARNING PLATFORM",
+            "Teranga Académie",
+            "French-language online school born in Senegal: web development, office software, "
+            "entrepreneurship and languages, with a 24/7 AI tutor and verifiable certificates.",
+            ["43 courses", "795 lessons", "AI tutor", "Works offline", "Wave · Orange Money"],
+            "terangaacademie.com"),
+        "project-bureautique.svg": project_small(
+            fonts, "bureautique", "cours-bureautique.vercel.app", "Cours Bureautique",
+            "Office software training: Word, Excel, PowerPoint and collaboration tools, with "
+            "142 video lessons, PDF exercises and quizzes.",
+            ["Word", "Excel", "PowerPoint"], "LIVE WEBSITE"),
+        "project-schoolpro.svg": project_small(
+            fonts, "schoolpro", "github.com/cjr23/Gestion-Examens-Blancs", "SchoolPro",
+            "School management app for Senegalese schools: mock exams (CFEE, BFEM, BAC), "
+            "grades, report cards and attendance. Works offline.",
+            ["HTML", "CSS", "JavaScript"], "WEB APP · OFFLINE", dot=CYAN, cta="Code"),
         "project-ceshfpt.svg": project_small(
-            fonts, "ceshfpt", "ceshfpt", "ceshfpt.vercel.app", "CESHFPT Tambacounda",
+            fonts, "ceshfpt", "ceshfpt.vercel.app", "CESHFPT Tambacounda",
             "Website for a solar energy and vocational training center: courses, solar "
             "installation estimator, photo gallery and WhatsApp contact.",
             ["HTML", "CSS", "JavaScript"], "LIVE WEBSITE"),
         "project-teranga.svg": project_small(
-            fonts, "teranga", "teranga", "terangaconsulting.vercel.app", "Teranga Consulting",
+            fonts, "teranga", "terangaconsulting.vercel.app", "Teranga Consulting",
             "Showcase site for an IT, communication and training consultancy serving SMEs "
             "and NGOs in Senegal, with prices in FCFA.",
             ["HTML", "CSS", "JavaScript"], "LIVE WEBSITE"),
+        "project-teranga-ai.svg": project_progress(
+            fonts, "Teranga AI",
+            "A customizable AI-agent platform for professionals, businesses and individuals."),
         "stack.svg": stack(fonts),
-        "button-linkedin.svg": button(fonts, "linkedin"),
-        "button-email.svg": button(fonts, "email"),
         "footer.svg": footer(fonts),
     }
+    for kind in BUTTONS:
+        outputs[f"button-{kind}.svg"] = button(fonts, kind)
     for number, (slug, text, comment) in enumerate((
             ("projects", "Featured projects", "// recent work"),
             ("stack", "Tech stack", "// tools I work with"),
-            ("contact", "Get in touch", "// let's build something")), start=1):
+            ("contact", "Get in touch", "// let's build something together")), start=1):
         for theme in ("dark", "light"):
             outputs[f"title-{slug}-{theme}.svg"] = title(fonts, f"0{number}", text, comment, theme == "dark")
     for filename, svg in outputs.items():
